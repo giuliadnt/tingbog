@@ -1,0 +1,43 @@
+   '''internship project tinbog
+1 - get rid of table of contents and intro
+2 - one year per file
+3 - transform special char, reduce multiple spaces
+4 - strip html tags
+5 - find court cases
+6 - ensure they are consecutive
+7 - write to individual files name by year, case num
+8 - use no special char or spaces in the name
+'''
+
+#read html file
+#from bs4 import BeautifulSoup
+
+import re
+import os
+
+#parse htm files, remove spaces, remove tags
+def parsefile(path):
+   #read file
+   file = open(path, "r")
+   fileread = file.read()
+   #remove &nbsp
+   no_space = fileread.replace("&nbsp;", " ")
+   #remove html tags with regex
+   no_tags = re.sub ('<[^<]+?>', '' ,no_space)
+   return no_tags
+
+mydata = parsefile('C:\Users\GiuliaDnt\Desktop\intern\Aasum Herreds Tingbog_TXT.htm')
+
+#get text between indices (two purposes: separate single cases, separate years grouped in the same file)
+def find_text_between(mytext, first_item, last_item):
+    first_index = mytext.find(first_item) + len(first_item)
+    last_index = mytext.find(last_item) + len(last_item)
+    return mytext[first_index : last_index]
+
+
+#create new file - get title - create file - write file
+def create_new_file(path):
+    #get titles minus extension from files in folder
+    court_book_path = os.path.basename(path)
+    court_book_title = os.path.splitext(court_book_path)[0]
+   return court_book_title
