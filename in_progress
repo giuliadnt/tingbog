@@ -32,20 +32,22 @@ def divide_file(mytext, first_item, last_item):
     return mytext[first_index : last_index]
     
 #create new file - get title - create file - write file
-def create_new_file(path):
-    #get titles minus extension from files in folder
+def create_case_file(path):
+    mytext = parsefile(path)
     court_book_path = os.path.basename(path)
-    court_book_title = os.path.splitext(court_book_path)[0]
-    return court_book_title
+    indices = ["[" + i for i in (re.findall(r"\[(\d+)\s", mydata))]
+    court_book_title = [os.path.splitext(court_book_path)[0] + " " + i for i in indices]
+    cases = [mytext[0:mytext.find("[1")]]
+    for i, j in enumerate(indices):
+        if i < len(indices)-1:
+            cases.append(find_text_between(mytext, indices[i], indices[i+1]))
 
-#get cases_indices
-indices = re.findall(r"\[(\d+)", mydata)
-brackets_indices = ["[" + i for i in indices]
+    return zip(court_book_title, cases)[0]
 
-#extract text for each index
-for i, j in enumerate(brackets_indices):
-    if i < len(brackets_indices)-1:
-        print find_text_between(mydata, brackets_indices[i], brackets_indices[i+1])
+mydata = parsefile('C:\Users\GiuliaDnt\Desktop\intern\Skast Herreds Tingbog 1636_TXT.htm')
+
+print create_case_file('C:\Users\GiuliaDnt\Desktop\intern\Skast Herreds Tingbog 1636_TXT.htm')
+
 
 
 
