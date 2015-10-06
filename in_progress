@@ -9,9 +9,6 @@
 8 - use no special char or spaces in the name
 '''
 
-#read html file
-#from bs4 import BeautifulSoup
-
 import re
 import os
 
@@ -39,7 +36,7 @@ def create_new_file(path):
     #get titles minus extension from files in folder
     court_book_path = os.path.basename(path)
     court_book_title = os.path.splitext(court_book_path)[0]
-   return court_book_title
+    return court_book_title
 
 #get cases_indices
 indices = re.findall(r"\[(\d+)", mydata)
