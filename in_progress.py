@@ -23,8 +23,6 @@ def parsefile(path):
    no_tags = re.sub ('<[^<]+?>', '' ,no_space)
    return no_tags
 
-data = parsefile('C:\Users\GiuliaDnt\Desktop\intern\Aasum Herreds Tingbog_TXT.htm')
-
 #get text between indices (two purposes: separate single cases, separate years grouped in the same file)
 def divide_file(mytext, first_item, last_item):
     first_index = mytext.find(first_item) + len(first_item)
@@ -35,18 +33,22 @@ def divide_file(mytext, first_item, last_item):
 def create_case_file(path):
     mytext = parsefile(path)
     court_book_path = os.path.basename(path)
-    indices = ["[" + i for i in (re.findall(r"\[(\d+)\s", mydata))]
+    indices = ["[" + i for i in (re.findall(r"\[(\d+)\s", mytext))]
     court_book_title = [os.path.splitext(court_book_path)[0] + " " + i for i in indices]
     cases = [mytext[0:mytext.find("[1")]]
     for i, j in enumerate(indices):
         if i < len(indices)-1:
             cases.append(find_text_between(mytext, indices[i], indices[i+1]))
+    for case, filename in zip(cases, court_book_title):
+        with open(filename + ".txt", 'w') as output:
+            output.write(case + '\n')
+    #return zip(court_book_title, cases)
+    return None
+    
 
-    return zip(court_book_title, cases)[0]
+#mydata = parsefile('C:\Users\GiuliaDnt\Desktop\intern\Skast Herreds Tingbog 1636_TXT.htm')
 
-mydata = parsefile('C:\Users\GiuliaDnt\Desktop\intern\Skast Herreds Tingbog 1636_TXT.htm')
-
-print create_case_file('C:\Users\GiuliaDnt\Desktop\intern\Skast Herreds Tingbog 1636_TXT.htm')
+#create_case_file('C:\Users\GiuliaDnt\Desktop\intern\Skast Herreds Tingbog 1636_TXT.htm')
 
 
 
